@@ -3,6 +3,7 @@ package fpinscala.iomonad
 import Future._
 
 object FutureTest extends App {
+  /*
   val N = 100000
   def worstCaseScenario1 =
     (0 to N).map(i => Future(i)).foldLeft(Future(0)) {
@@ -58,5 +59,6 @@ object FutureTest extends App {
   println(worstCaseScenario3.run)
   println(worstCaseScenario3a.run)
   runRepeatedly(10000).run
+  */
 }
 
