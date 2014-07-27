@@ -35,8 +35,32 @@ object MyModule {
   }
 
   // Exercise 1: Write a function to compute the nth fibonacci number
+  def fib(n: Int): Int = {
+    @annotation.tailrec
+    def go(b1: Int, b2: Int, p: Int): Int =
+      if (p == 0) b1
+      else go(b2, b1 + b2, p - 1)
 
-  def fib(n: Int): Int = ???
+    go(0, 1, n)
+  }
+
+  def main1(args: Array[String]) {
+    println(fib(0))
+    println(fib(1))
+    println(fib(2))
+    println(fib(3))
+    println(fib(4))
+    println(fib(5))
+    println(fib(6))
+    println(fib(7))
+    println(fib(8))
+    println(fib(9))
+    println(fib(10))
+    println(fib(11))
+    println(fib(12))
+    println(fib(13))
+    println(fib(14))
+  }
 
   // This definition and `formatAbs` are very similar..
   private def formatFactorial(n: Int) = {
