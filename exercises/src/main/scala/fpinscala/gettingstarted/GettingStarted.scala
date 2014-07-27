@@ -13,7 +13,7 @@ object MyModule {
     msg.format(x, abs(x))
   }
 
-  def main(args: Array[String]): Unit =
+  def main1(args: Array[String]): Unit =
     println(formatAbs(-42))
 
   // A definition of factorial, using a local, tail recursive function
@@ -44,7 +44,7 @@ object MyModule {
     go(0, 1, n)
   }
 
-  def main1(args: Array[String]) {
+  def main(args: Array[String]) {
     println(fib(0))
     println(fib(1))
     println(fib(2))
@@ -153,7 +153,19 @@ object PolymorphicFunctions {
 
   // Exercise 2: Implement a polymorphic function to check whether
   // an `Array[A]` is sorted
-  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = ???
+  def isSorted[A](as: Array[A], gt: (A,A) => Boolean): Boolean = {
+    @annotation.tailrec
+    def go(n: Int): Boolean = {
+      if (n >= as.length) true
+      else if (! gt(as(n),as(n-1))) false
+      else go(n+1)
+    }
+    go(1)
+  }
+
+  def main(args: Array[String]) {
+    println(isSorted(Array(0,1,4,6,30,34), (a: Int,b: Int) => a > b))
+  }
 
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
