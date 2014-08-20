@@ -7,13 +7,13 @@ case class Cons[+A](head: A, tail: List[A]) extends List[A] // Another data cons
 object List { // `List` companion object. Contains functions for creating and working with lists.
   def sum(ints: List[Int]): Int = ints match { // A function that uses pattern matching to add up a list of integers
     case Nil => 0 // The sum of the empty list is 0.
-    case Cons(x,xs) => x + sum(xs) // The sum of a list starting with `x` is `x` plus the sum of the rest of the list.
+    case Cons(h,xs) => h + sum(xs) // The sum of a list starting with `x` is `x` plus the sum of the rest of the list.
   } 
   
   def product(ds: List[Double]): Double = ds match {
     case Nil => 1.0
     case Cons(0.0, _) => 0.0
-    case Cons(x,xs) => x * product(xs)
+    case Cons(h,xs) => h * product(xs)
   }
   
   def apply[A](as: A*): List[A] = // Variadic function syntax
@@ -21,9 +21,9 @@ object List { // `List` companion object. Contains functions for creating and wo
     else Cons(as.head, apply(as.tail: _*))
 
   val x = List(1,2,3,4,5) match {
-    case Cons(x, Cons(2, Cons(4, _))) => x
+    case Cons(h, Cons(2, Cons(4, _))) => h
     case Nil => 42 
-    case Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
+    case Cons(h, Cons(y, Cons(3, Cons(4, _)))) => h + y   //this is returned .........
     case Cons(h, t) => h + sum(t)
     case _ => 101 
   }
@@ -42,36 +42,69 @@ object List { // `List` companion object. Contains functions for creating and wo
   
   def sum2(ns: List[Int]) = 
     foldRight(ns, 0)((x,y) => x + y)
+
+  def sum3(ns: List[Int]) = foldRight(ns, 0)( _ + _)
   
   def product2(ns: List[Double]) = 
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  def tail[A](l: List[A]): List[A] = sys.error("todo")
+  def tail[A](l: List[A]): List[A] = l match {
+      case Nil => Nil
+      case Cons(_,xs) => xs
+    }
 
-  def setHead[A](l: List[A], h: A): List[A] = sys.error("todo")
+  def setHead[A](l: List[A], h: A): List[A] = l match {
+      case Nil => Nil
+      case Cons(_,xs) => Cons(h,xs)
+    }
 
-  def drop[A](l: List[A], n: Int): List[A] = sys.error("todo")
+  def drop[A](l: List[A], n: Int): List[A] = {
+    if (n <= 0) l
+    else l match {
+      case Nil => Nil
+      case Cons(_,t) => drop(t, n-1)
+    }
+  }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = sys.error("todo")
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Cons(head,tail) if f(head) => dropWhile(tail, f)
+    case _ => l
+  }
 
-  def init[A](l: List[A]): List[A] = sys.error("todo")
+  def init[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(head,Nil) => Nil
+    case Cons(head,tail) => Cons(head,init(tail))
+  }
 
-  def length[A](l: List[A]): Int = sys.error("todo")
+  def length[A](l: List[A]): Int = {
+    foldRight(l,0)((x, y) => y + 1)
+  }
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B =
+    l match {
+      case Nil => z
+      case Cons(h, xs) => foldLeft(xs, f(z,h))(f)
+    }
 
-  def sumViaFoldLeft(nums: List[Int]): Int = sys.error("todo")
+  def sumViaFoldLeft(nums: List[Int]): Int =
+    foldLeft(nums, 0)(_+_)
 
-  def productViaFoldLeft(nums: List[Double]): Double = sys.error("todo")
+  def productViaFoldLeft(nums: List[Double]): Double =
+    foldLeft(nums,1.0)(_*_)
 
-  def lengthViaFoldLeft(l: List[_]): Int = sys.error("todo")
+  def lengthViaFoldLeft(l: List[_]): Int =
+    foldLeft(l,0)((x,y)=>x+1)
 
-  def reverse[A](l: List[A]): List[A] = sys.error("todo")
+  def reverse[A](l: List[A]): List[A] =
+    foldLeft(l,Nil:List[A])((x,y) => Cons(y,x))
 
-  def appendViaFoldRight[A](l1: List[A], l2: List[A]): List[A] = sys.error("todo")
+  def appendViaFoldRight[A](l1: List[A], l2: List[A]): List[A] =
+    foldRight(l1, l2)((x,y) => Cons(x,y))
 
-  def appendViaFoldLeft[A](a1: List[A], a2: List[A]): List[A] = sys.error("todo")
+  def appendViaFoldLeft[A](a1: List[A], a2: List[A]): List[A] =
+    reverse(foldLeft(a2,reverse(a1))((x,y)=>Cons(y,x)))
 
   def concat[A](l: List[List[A]]): List[A] = sys.error("todo")
 
