@@ -32,10 +32,8 @@ class ListSpec extends FlatSpec with PropertyChecks {
 
   behavior of "3.2 tail"
 
-  it should "throw a RuntimeException when passed an empty List" in {
-    intercept[RuntimeException] {
-      tail(Nil)
-    }
+  it should "should return an empty List when passed an empty List" in {
+      assertResult(Nil)(tail(Nil))
   }
 
   it should "work" in {
@@ -76,10 +74,8 @@ class ListSpec extends FlatSpec with PropertyChecks {
 
   behavior of "3.3 setHead"
 
-  it should "throw a RuntimeException when passed an empty List" in {
-    intercept[RuntimeException] {
-      setHead(Nil, 1)
-    }
+  it should "should return an empty List when passed an empty List" in {
+    assertResult(Nil)(setHead(Nil, 1))
   }
 
   it should "work" in {
@@ -182,10 +178,8 @@ class ListSpec extends FlatSpec with PropertyChecks {
 
   behavior of "3.6 init"
 
-  it should "throw a RuntimeException when passed an empty List" in {
-    intercept[RuntimeException] {
-      init(Nil)
-    }
+  it should "should return an empty List when passed an empty List" in {
+    assertResult(Nil)(init(Nil))
   }
 
   it should "work" in {
