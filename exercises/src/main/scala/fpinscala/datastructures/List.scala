@@ -104,7 +104,8 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(l1, l2)((x,y) => Cons(x,y))
 
   def appendViaFoldLeft[A](a1: List[A], a2: List[A]): List[A] =
-    reverse(foldLeft(a2,reverse(a1))((x,y)=>Cons(y,x)))
+    foldLeft(reverse(a1), a2)((y,x)=>Cons(x,y))
+    //reverse(foldLeft(a2,reverse(a1))((x,y)=>Cons(y,x)))
 
   def concat[A](l: List[List[A]]): List[A] = sys.error("todo")
 
