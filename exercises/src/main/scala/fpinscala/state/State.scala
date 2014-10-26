@@ -86,9 +86,17 @@ object RNG {
     }
   }
 
-  def doubleViaMap: Rand[Double] = ???
+  def doubleViaMap: Rand[Double] = {
+    map(nonNegativeInt)(_/(Int.MaxValue.toDouble+1))
+  }
 
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
+  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
+    r => {
+      val (i1,r1) = ra(r)
+      val (i2,r2) = rb(r1)
+      (f(i1,i2),r2)
+    }
+  }
 
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = ???
 
