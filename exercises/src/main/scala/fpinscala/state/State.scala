@@ -5,6 +5,25 @@ trait RNG {
   def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
 }
 
+object test {
+
+  def main(args: Array[String]) {
+    print(234)
+    print(-222)
+    print(Int.MaxValue)
+    print(Int.MinValue)
+    print(0)
+    print(-2147483647)
+    print(1)
+    print(-1)
+
+  }
+
+  def print(i:Int):Unit = {
+    println(" result: " + i + " xxx " + (~i))
+  }
+}
+
 object RNG {
   // NB - this was called SimpleRNG in the book text
 
@@ -30,17 +49,42 @@ object RNG {
       (f(a), rng2)
     }
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = ???
+  def nonNegativeInt(r: RNG): (Int, RNG) = {
+    val (i,rng) = r.nextInt
+    ( if (i < 0) ~i else i, rng)
+  }
 
-  def double(rng: RNG): (Double, RNG) = ???
+  def double(r: RNG): (Double, RNG) = {
+    val (i,rng) = nonNegativeInt(r)
+    ( i / (Int.MaxValue.toDouble + 1), rng)
+  }
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def intDouble(r: RNG): ((Int,Double), RNG) = {
+    val (i,rng) = r.nextInt
+    val (d,_) = double(r)
+    ((i,d),rng)
+  }
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val ((i,d),r) = intDouble(rng)
+    ((d,i),r)
+  }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (d,r) = double(rng)
+    val (d1,r1) = double(r)
+    val (d2,r2) = double(r1)
+    ((d,d1,d2),r2)
+  }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    if (count <= 0) (List(),rng)
+    else {
+      val (i,r) = rng.nextInt
+      val (ii, r1) = ints(count-1)(r)
+      (i :: ii, r1)
+    }
+  }
 
   def doubleViaMap: Rand[Double] = ???
 
