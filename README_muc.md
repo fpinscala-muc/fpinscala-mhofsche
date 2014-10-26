@@ -39,6 +39,18 @@ If not done yet the sbteclipse plugin has to be configured, add the following to
 
 See also https://github.com/typesafehub/sbteclipse/
 
+### Import projects into IntelliJ IDEA
+
+To import the project into IntelliJ IDEA the project files have to be generated first.
+
+    $ sbt gen-idea
+
+If not done yet the IntelliJ plugin has to be configured, add the following to `~/.sbt/0.13/plugins/plugins.sbt`:
+
+    addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
+
+See also https://github.com/mpeltonen/sbt-idea/
+
 ## In the Beginning - Scala
 * Scala Coding guidelines: http://twitter.github.io/effectivescala/ (see also the Learning Scala links in the Intro section there)
 
@@ -146,8 +158,9 @@ Can we come up with an elegant (Stream?!) solution in Scala that is somewhere in
 
 ### Misc
 * Interesting talk about types and type inference: https://www.youtube.com/watch?v=fDTt_uo0F-g
-* Property-based testing with ScalaCheck: http://www.nurkiewicz.com/2014/09/property-based-testing-with-scalacheck.html  
-(although ScalaTests's docu is also quite ok. http://scalatest.org/user_guide/generator_driven_property_checks)
+* [Property-based testing with ScalaCheck](http://www.nurkiewicz.com/2014/09/property-based-testing-with-scalacheck.html)
+(although [ScalaTests's docu](http://scalatest.org/user_guide/generator_driven_property_checks) is also quite ok).
+* [Object-Functional Programming – A Beautiful Unification or a Kitchen Sink?](https://speakerdeck.com/missingfaktor/object-functional-programming-a-beautiful-unification-or-a-kitchen-sink)
 
 #### Is Scala too complex?
 * http://lampwww.epfl.ch/~odersky/blogs/isscalacomplex.html
