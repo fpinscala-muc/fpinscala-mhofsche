@@ -18,7 +18,14 @@ trait Stream[+A] {
     case Cons(h, t) => if (f(h())) Some(h()) else t().find(f)
   }
 
-  def toList: List[A] = sys.error("todo")
+  def toList: List[A] = {
+    @annotation.tailrec
+    def rec(xs: List[A], st: Stream[A]) : List[A] = st match {
+      case Cons(h, t) => rec(h() :: xs, t())
+      case _ => xs
+    }
+    rec(List(), this).reverse
+  }
 
   def take(n: Int): Stream[A] = sys.error("todo")
 
